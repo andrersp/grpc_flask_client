@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:9.6-alpine
+    volumes:
+      - grpc_client_data:/var/lib/postgresql/data/
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - POSTGRES_USER=grpc_client
+      - POSTGRES_PASSWORD=grpc_client
+    networks:
+      - database_network
+  
+  
+  api:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile.develop
+
+    restart: always
+    volumes:
+      - .:/app
+    
+    networks:
+      - net_api
+      - database_network
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    
+
+networks:
+  net_api:
+  database_network:
+  
+  
+volumes:
+  grpc_client_data:

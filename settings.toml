@@ -1,0 +1,7 @@
+[default]
+SQLALCHEMY_TRACK_MODIFICATIONS=false
+
+EXTENSIONS = [
+    "grpc_client.blueprints.rest_v1",    
+]
+

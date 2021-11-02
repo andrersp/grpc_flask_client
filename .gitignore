@@ -1,0 +1,11 @@
+*.db
+*.pyc
+.idea
+venv
+*.xlsx
+*.csv
+*.sql
+.vscode
+__pycache__
+.env
+.settings.toml
