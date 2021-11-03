@@ -2,7 +2,6 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 import grpc_client.messages.movies_pb2 as movies__pb2
 
 
@@ -17,7 +16,7 @@ class MoviesServiceStub(object):
         """
         self.GetMovies = channel.unary_unary(
             '/MoviesService/GetMovies',
-            request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            request_serializer=movies__pb2.GetMoviesParam.SerializeToString,
             response_deserializer=movies__pb2.MoviesList.FromString,
         )
         self.GetMovie = channel.unary_unary(
@@ -58,7 +57,7 @@ def add_MoviesServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         'GetMovies': grpc.unary_unary_rpc_method_handler(
             servicer.GetMovies,
-            request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            request_deserializer=movies__pb2.GetMoviesParam.FromString,
             response_serializer=movies__pb2.MoviesList.SerializeToString,
         ),
         'GetMovie': grpc.unary_unary_rpc_method_handler(
@@ -94,7 +93,7 @@ class MoviesService(object):
                   timeout=None,
                   metadata=None):
         return grpc.experimental.unary_unary(request, target, '/MoviesService/GetMovies',
-                                             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                                             movies__pb2.GetMoviesParam.SerializeToString,
                                              movies__pb2.MoviesList.FromString,
                                              options, channel_credentials,
                                              insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -40,11 +40,30 @@ docker-compose up --build
 ```
 ### Endpoints
 
+## INSERT MOVIES
+[http://127.0.0.1:5000/v1/movies](http://127.0.0.1:5000/v1/movies)
+## Method: POST
+> RESPONSE
+```javascript
+{
+    "success": true,
+}
+```
+
+
 ## GET ALL MOVIES
 
 [http://127.0.0.1:5000/v1/movies](http://127.0.0.1:5000/v1/movies)
-
 ## Method: GET
+## url params
+```javascript
+{
+    "page": 1, #default
+    "limit": 20 #default
+}
+```
+
+
 > RESPONSE
 ```javascript
 {
@@ -56,5 +75,35 @@ docker-compose up --build
             "adult": false
         }
     ]
+}
+```
+## GET ONE MOVIE
+
+[http://127.0.0.1:5000/v1/movies/movie_id](http://127.0.0.1:5000/v1/movies/1)
+## Method: GET
+## url params
+
+> RESPONSE
+```javascript
+{
+    "id": 4545,
+    "title": "Tango & Cash",
+    "language": "en",
+    "adult": false,
+    "genres": [
+        {
+            "id": 28,
+            "name": "Action"
+        },
+        {
+            "id": 12,
+            "name": "Adventure"
+        },
+        {
+            "id": 35,
+            "name": "Comedy"
+        }
+    ],
+    "success": true
 }
 ```
