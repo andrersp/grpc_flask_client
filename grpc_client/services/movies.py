@@ -31,10 +31,5 @@ class MovieClient(object):
 
     def get_movie(self, movie_id):
 
-        try:
-            message = pb2.MovieId(movie_id=movie_id)
-        except grpc.RpcError as e:
-            print(e)
-            return False
-        else:
-            return client.GetMovie(message)
+        message = pb2.MovieId(movie_id=movie_id)
+        return client.GetMovie(message)

@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 import time
+import grpc
 
 
 from grpc_client.services.movies import MovieClient
@@ -29,8 +30,9 @@ class Movies(Resource):
         response_time = '{:.2f}'.format(end - start)
 
         movies = serializers.serialize_all_movies(result)
+        movies.update({"reponse_time": response_time})
 
-        return success({"reponse_time": response_time, "data": movies})
+        return success(movies)
 
     def post(self):
 
@@ -50,9 +52,20 @@ class Movie(Resource):
         if not movie_id:
             return error({"msg": "invalid Movie id"})
 
-        service = MovieClient()
+        try:
+            service = MovieClient()
+            result = service.get_movie(movie_id)
 
-        result = service.get_movie(movie_id)
+        except grpc.RpcError as e:
+            print(e.details())
+            details = e.details()
+            status_code = e.code()
+
+            if grpc.StatusCode.NOT_FOUND == status_code:
+                return error({"msg": details}, status_code=404)
+            return error({"msg": "Error server comunication"}, 500)
+        except:
+            return error({"msg": "Internal error server"}, 500)
 
         if not result.success:
             return error({"msg": "Movie not found"}, status_code=404)
